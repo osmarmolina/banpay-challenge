@@ -1,16 +1,20 @@
-
-import { createParamDecorator, ExecutionContext, InternalServerErrorException } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 export const User = createParamDecorator(
-    (data: string, ctx: ExecutionContext) => {
-        const request = ctx.switchToHttp().getRequest();
-        const user = request.user;
+  (data: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const user = request.user;
 
-        if(!request.user){
-            throw new InternalServerErrorException('User not found in request Authguard')
-        }
+    if (!request.user) {
+      throw new InternalServerErrorException(
+        'User not found in request Authguard',
+      );
+    }
 
-        return data ? user?.[data] : user;
-    },
+    return data ? user?.[data] : user;
+  },
 );
-    

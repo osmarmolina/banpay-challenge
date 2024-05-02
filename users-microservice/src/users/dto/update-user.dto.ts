@@ -1,29 +1,35 @@
-import { Type } from "class-transformer";
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
-import { UserValidatedDto } from "./user-validated.dto";
-import { RoleEnum } from "../enum/role.enum";
-import { Role } from "@prisma/client";
+import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { UserValidatedDto } from './user-validated.dto';
+import { RoleEnum } from '../enum/role.enum';
+import { Role } from '@prisma/client';
 
 export class UpdateUserDto {
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => UserValidatedDto)
+  user: UserValidatedDto;
 
-    @IsNotEmpty()
-    @ValidateNested({each: true})
-    @Type(()=> UserValidatedDto)
-    user: UserValidatedDto
+  @IsOptional()
+  @IsString()
+  username?: string;
 
-    @IsOptional()
-    @IsString()
-    username?: string;
+  @IsOptional()
+  @IsEmail()
+  email?: string;
 
-    @IsOptional()
-    @IsEmail()
-    email?: string;
+  @IsOptional()
+  @IsString()
+  deleted?: boolean;
 
-    @IsOptional()
-    @IsString()
-    deleted?: boolean;
-
-    @IsEnum(RoleEnum)
-    @IsOptional()
-    role: Role;
+  @IsEnum(RoleEnum)
+  @IsOptional()
+  role: Role;
 }

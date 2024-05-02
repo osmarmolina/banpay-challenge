@@ -13,6 +13,6 @@ import { envs } from '../config';
       secret: envs.jwtSecret,
       signOptions: { expiresIn: envs.jwtExpiresIn },
     }),
-  ]
+  ],
 })
 export class AuthModule {}

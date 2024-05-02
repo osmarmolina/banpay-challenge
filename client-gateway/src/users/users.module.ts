@@ -4,6 +4,6 @@ import { NatsModule } from 'src/common/transports/nats.module';
 
 @Module({
   controllers: [UsersController],
-  imports:[NatsModule]
+  imports: [NatsModule],
 })
 export class UsersModule {}

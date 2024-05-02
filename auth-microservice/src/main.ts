@@ -5,23 +5,25 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { envs } from './config';
 
 async function bootstrap() {
-  const logger = new Logger('Main auth-microservice')
+  const logger = new Logger('Main auth-microservice');
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    transport: Transport.NATS,
-    options: {
-      servers: envs.natsServers
-    }
-  });
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.NATS,
+      options: {
+        servers: envs.natsServers,
+      },
+    },
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      forbidUnknownValues: true
-    })
-  )
+      forbidUnknownValues: true,
+    }),
+  );
 
-  
   await app.listen();
   logger.log(`Auth Microservice is running on ${envs.port}`);
 }
