@@ -1,8 +1,8 @@
-import { Role } from "@prisma/client";
+
 
 export interface FindMultiple {
     username?: string;
     email?: string;
-    role?: Role
+    role?: string
     id?: string
 }

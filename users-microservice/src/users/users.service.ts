@@ -57,11 +57,14 @@ export class UsersService extends PrismaClient implements OnModuleInit {
     }
 
     async getallUsers(data: PaginationDto) {
+
         const { page, limit, ...rest } = data
 
-        console.log(rest)
+        const total = await this.user.count({
+            where: rest
+        })
 
-        return this.user.findMany({
+        const users = await this.user.findMany({
             where: rest,
             select: {
                 id: true,
@@ -72,9 +75,20 @@ export class UsersService extends PrismaClient implements OnModuleInit {
                 updatedAt: true,
                 deleted: true
             },
-            skip: (data.page - 1) * data.limit,
-            take: data.limit
+            skip: (page - 1) * limit,
+            take: limit
         })
+
+        return{
+            users,
+            metadata:{
+                totalRegisters: total,
+                page: data.page,
+                limit: data.limit,
+                totalPages: Math.ceil(total / data.limit)
+            
+            }
+        }
     }
 
     async updateUser(data: UpdateUserDto) {
@@ -118,7 +132,15 @@ export class UsersService extends PrismaClient implements OnModuleInit {
                 where: {
                     id: user.id
                 },
-                data: datToBeUpdated
+                data: datToBeUpdated,
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    role: true,
+                    createdAt: true,
+                    updatedAt: true
+                }
             })
         }
 

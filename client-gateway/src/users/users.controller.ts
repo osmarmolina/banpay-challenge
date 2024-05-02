@@ -39,7 +39,7 @@ export class UsersController {
       message: 'You are not allowed to perform this action'
     })
     
-    return this.client.send('get-all', { paginationDto, ...filters })
+    return this.client.send('get-all', { ...paginationDto, ...filters })
       .pipe(catchError(error => { throw new RpcException(error) }))
   }
 

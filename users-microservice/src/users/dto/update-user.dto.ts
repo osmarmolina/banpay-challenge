@@ -1,7 +1,8 @@
-import { Role } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { UserValidatedDto } from "./user-validated.dto";
+import { RoleEnum } from "../enum/role.enum";
+import { Role } from "@prisma/client";
 
 export class UpdateUserDto {
 
@@ -22,7 +23,7 @@ export class UpdateUserDto {
     @IsString()
     deleted?: boolean;
 
+    @IsEnum(RoleEnum)
     @IsOptional()
-    @IsEnum(Role)
-    role?: Role;
+    role: Role;
 }

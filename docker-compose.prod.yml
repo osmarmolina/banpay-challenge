@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  #Nats server
+  nats-server:
+    image: nats:latest
+
+  #Client gateway
+  client-gateway:
+    build: 
+      context: ./client-gateway
+      dockerfile: dockerfile.prod
+    image: client-gateway-prod
+    ports:
+      - ${PORT_GATEWAY}:${PORT_GATEWAY}
+    environment:
+      - PORT=${PORT_GATEWAY}
+      - NATS_SERVERS=nats://nats-server:4222
+
+  #Auth microservice
+  auth-microservice:
+    build: 
+      context: ./auth-microservice
+      dockerfile: dockerfile.prod
+    image: auth-microservice-prod
+    environment:
+      - PORT=${PORT_AUTH}
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+
+  #Users microservice
+  users-microservice:
+    build: 
+      context: ./users-microservice
+      dockerfile: dockerfile.prod
+    image: users-microservice-prod
+    environment:
+      - PORT=${PORT_USERS}
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${DATABASE_URL}
+      - GHIBLI_API_URL=${GHIBLI_API_URL}

@@ -26,6 +26,7 @@ export class UsersController {
 
   @MessagePattern('update-user')
   upateUser(@Payload() data: UpdateUserDto) {
+    //return data
     return this.usersService.updateUser(data)
   }
 

@@ -1,5 +1,6 @@
-import { Role } from "@prisma/client";
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { RoleEnum } from "../enum/role.enum";
+import { Role } from "@prisma/client";
 
 export class UpdateUserRootDto {
 
@@ -16,6 +17,6 @@ export class UpdateUserRootDto {
     email?: string;
 
     @IsOptional()
-    @IsEnum(Role)
+    @IsEnum(RoleEnum)
     role?: Role;
 }
