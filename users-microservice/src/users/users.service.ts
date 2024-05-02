@@ -153,12 +153,20 @@ export class UsersService extends PrismaClient implements OnModuleInit {
     }
 
     async updateUserRoot(data: UpdateUserRootDto) {
+        console.log(data)
 
         const user = await this.findByMultipleParams({ id: data.id })
+        
+        if(!user){
+            throw new RpcException({
+                status: HttpStatus.NOT_FOUND,
+                message: 'User not found'
+            })
+        }
 
         const datToBeUpdated = {}
 
-        if (user.email !== data.email) {
+        if ('email' in data && user.email !== data.email) {
 
             const userEmail = await this.findByMultipleParams({ email: data.email })
 
@@ -169,7 +177,8 @@ export class UsersService extends PrismaClient implements OnModuleInit {
             datToBeUpdated['email'] = data.email
         }
 
-        if (user.username !== data.username) {
+        if ('username' in data && user.email !== data.username) {
+           
             const findUsername = await this.findByMultipleParams({ username: data.username })
 
             if (findUsername) throw new RpcException({
@@ -181,13 +190,23 @@ export class UsersService extends PrismaClient implements OnModuleInit {
 
         if (data.role) datToBeUpdated['role'] = data.role
 
+        console.log(datToBeUpdated)
+
         if (Object.keys(datToBeUpdated).length !== 0) {
 
             return this.user.update({
                 where: {
                     id: user.id
                 },
-                data: datToBeUpdated
+                data: datToBeUpdated,
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    role: true,
+                    createdAt: true,
+                    updatedAt: true
+                }
             })
         }
 

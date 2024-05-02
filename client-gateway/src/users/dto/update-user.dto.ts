@@ -13,10 +13,6 @@ export class UpdateUserDto {
     email?: string;
 
     @IsOptional()
-    @IsString()
-    deleted?: boolean;
-
-    @IsOptional()
     @IsEnum(Role)
     role?: Role;
 
