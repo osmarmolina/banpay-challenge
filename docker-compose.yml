@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+
+  #Nats server
+  nats-server:
+    image: nats:latest
+    ports:
+      - 8222:8222
+
+  #Api gateway
+  client-gateway:
+    build: ./client-gateway
+    ports:
+      - ${PORT_GATEWAY}:3000
+    volumes:
+      - ./client-gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=${PORT_GATEWAY}
+      - NATS_SERVERS=nats://nats-server:4222
+
+  #Auth microservice
+  auth-microservice:
+    build: ./auth-microservice
+    volumes:
+      - ./auth-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=${PORT_AUTH}
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${DATABASE_URL} #JWT
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+
+  #Users microservice
+  users-microservice:
+    build: ./users-microservice
+    volumes:
+      - ./users-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=${PORT_USERS}
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${DATABASE_URL}
+      - GHIBLI_API_URL=${GHIBLI_API_URL}
