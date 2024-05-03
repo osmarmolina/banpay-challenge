@@ -1,4 +1,3 @@
-
 import {
   CanActivate,
   ExecutionContext,
@@ -14,27 +13,24 @@ import { NATS_SERVICE } from 'src/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
-  constructor(
-    @Inject(NATS_SERVICE) private readonly client: ClientProxy
-  ) { }
+  constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException('Toekn not provided');
     }
     try {
+      const { user, token: newToken } = await firstValueFrom(
+        this.client.send('validate', token),
+      );
 
-      const { user, token: newToken } = await firstValueFrom(this.client.send('validate', token))
-
-      request['user'] = user
+      request['user'] = user;
       request['token'] = newToken;
-
+      
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new UnauthorizedException(error);
     }
     return true;

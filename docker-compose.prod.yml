@@ -16,7 +16,7 @@ services:
       - ${PORT_GATEWAY}:${PORT_GATEWAY}
     environment:
       - PORT=${PORT_GATEWAY}
-      - NATS_SERVERS=nats://nats-server:4222
+      - NATS_SERVERS=${NATS_SERVERS}
 
   #Auth microservice
   auth-microservice:
@@ -26,7 +26,7 @@ services:
     image: auth-microservice-prod
     environment:
       - PORT=${PORT_AUTH}
-      - NATS_SERVERS=nats://nats-server:4222
+      - NATS_SERVERS=${NATS_SERVERS}
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
@@ -39,6 +39,6 @@ services:
     image: users-microservice-prod
     environment:
       - PORT=${PORT_USERS}
-      - NATS_SERVERS=nats://nats-server:4222
+      - NATS_SERVERS=${NATS_SERVERS}
       - DATABASE_URL=${DATABASE_URL}
       - GHIBLI_API_URL=${GHIBLI_API_URL}
