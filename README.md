@@ -2,7 +2,7 @@
 # Deploy con docker
 
 ## dev
-1. Generar un archivo .env basado en el .env.template que se encuentra en la raiz del proyecto
+1. Renombrar el archivo ***.env.template*** por ***.env***, este archivo se encuentra en la raiz del proyecto
 2. Generar y levantar la imagen con el siguiente comando:
 
 ```bash
@@ -10,7 +10,7 @@
 ```
 
 ## prod
-1. Generar un archivo .env basado en el .env.template que se encuentra en la raiz del proyecto
+1. Renombrar el archivo ***.env.template*** por ***.env***, este archivo se encuentra en la raiz del proyecto
 2. Generar la imagen productiva con el comando:
 ```bash
 docker compose -f docker-compose.prod.yml build 
@@ -51,7 +51,7 @@ go install github.com/nats-io/nats-server/v2@latest
 ```
 
 ## Crear las variables de entorno
-Crear un archivo.env basado en el .env.template de cada microservicio (uasers-microservice, auth-microservice y client-gateway)
+Renombrar los archivos ***.env.template*** por ***.env***,que se encuentran en cada microservicio: ***auth-microservicio***, ***users-microservicio*** y ***client-gateway***
 
 ## Instalar node
 `Linux:`
@@ -69,18 +69,18 @@ npm i -g @nestjs/cli
 
 ## Levantar todos los microservicios
 
-1. Dirigirnos ala carpeta de ***client-gateway*** y ejecutarel comando:
+1. Dirigirnos ala carpeta de ***client-gateway*** y ejecuta rel comando:
 ```bash
 npm i
 npm run start:dev
 ```
-2. Dirigirnos ala carpeta de ***user-microservice*** y ejecutarel comando:
+2. Dirigirnos ala carpeta de ***user-microservice*** y ejecuta rel comando:
 ```bash
 npm i
 npm run start:dev
 ```
 
-3. Dirigirnos ala carpeta de ***auth-microservice*** y ejecutarel comando:
+3. Dirigirnos ala carpeta de ***auth-microservice*** y ejecutar el comando:
 ```bash
 npm i
 npm run start:dev
